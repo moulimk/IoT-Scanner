@@ -9,14 +9,20 @@ def load_oui_database(file_path='oui.txt'):
     logging.info("Loading OUI database from {}".format(file_path))
     try:
         with open(file_path, 'r') as f:
+            current_prefix = None
             for line in f:
-                if not line.startswith('#') and line.strip():
-                    parts = line.split()
-                    if len(parts) >= 3:
-                        # Handle extra tab/whitespace
-                        prefix = parts[0].strip().upper().replace(':', '-')
-                        manufacturer = ' '.join(parts[2:]).strip()
-                        OUI_DB[prefix] = manufacturer
+                line = line.strip()
+                if not line:
+                    continue
+                
+                parts = line.split()
+                if len(parts) == 3 and parts[2] == '(hex)':
+                    current_prefix = parts[0].upper().replace('-', ':')
+                elif current_prefix and len(parts) > 0:
+                    manufacturer = ' '.join(parts)
+                    OUI_DB[current_prefix] = manufacturer
+                    current_prefix = None
+
         logging.info("Loaded {} entries into OUI database".format(len(OUI_DB)))
         # Print first few entries for verification
         for i, (prefix, manufacturer) in enumerate(OUI_DB.items()):
@@ -39,4 +45,4 @@ def get_manufacturer(mac):
     return manufacturer
 
 # Load the OUI database at the start
-load_oui_database()
+load_oui_database('oui.txt')
