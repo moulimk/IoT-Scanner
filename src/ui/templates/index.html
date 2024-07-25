@@ -1,31 +1,46 @@
+<!-- templates/index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IoT Scanner</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>IoT Devices</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>Detected Devices</h1>
+    <h1>IoT Devices</h1>
     <table>
-        <thead>
-            <tr>
-                <th>MAC Address</th>
-                <th>IP Address</th>
-                <th>Manufacturer</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for device in devices %}
-            <tr>
-                <td>{{ device[0] }}</td>
-                <td>{{ device[1] }}</td>
-                <td>{{ device[2] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tr>
+            <th>MAC Address</th>
+            <th>IP Address</th>
+            <th>Manufacturer</th>
+            <th>Device Type</th>
+        </tr>
+        {% for device in devices %}
+        <tr>
+            <td>{{ device[0] }}</td>
+            <td>{{ device[1] }}</td>
+            <td>{{ device[2] }}</td>
+            <td>{{ device[3] }}</td>
+        </tr>
+        {% endfor %}
     </table>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <h2>Historical Data</h2>
+    <table>
+        <tr>
+            <th>MAC Address</th>
+            <th>IP Address</th>
+            <th>Activity</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for data in historical_data %}
+        <tr>
+            <td>{{ data[0] }}</td>
+            <td>{{ data[1] }}</td>
+            <td>{{ data[2] }}</td>
+            <td>{{ data[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
